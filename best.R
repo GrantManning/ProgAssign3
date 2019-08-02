@@ -3,23 +3,24 @@ best<-function(state,outcome){
     outcome<-outcome
     read<-read.csv("outcome-of-care-measures.csv")
     readstate<-filter(read,read$State==state)
-    #if(nrow(readstate)==0){
-    #   print(paste("Error in best(",state,outcome,") : invalid state",split=" "))
-    #    stop()
-    #}
+    if(nrow(readstate)==0){
+        stop(withCallingHandlers("invalid state"))
+    }
     if (outcome=="heart attack"){
-        condition<-readstate["Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack"]
+        condition<-readstate[,11]
     }
     else if(outcome=="heart failure"){
-        condition<-readstate["Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure"]
+        condition<-readstate[,17]
     }
     else if(outcome=="pneumonia"){
-        condition<-readstate["Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia"]
+        condition<-readstate[,23]
     }
-    #else{
-    #    print(paste("Error in best(",state,outcome,") : invalid outcome",split=" "))
-    #    stop()
-    #}
-    best<-filter(readstate,condition==min(condition))
+    else{
+        stop(withCallingHandlers("invalid outcome"))
+    }
+    best<-filter(readstate,as.numeric(condition)==min(as.numeric(condition)))
+    if(nrow(best)>1){
+        best<-arrange(best,Hospital.Name)[1,]
+    }
     return(best[,2])
 }
