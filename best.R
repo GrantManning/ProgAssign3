@@ -9,14 +9,20 @@ best<-function(state,outcome){
     if (outcome=="heart attack"){
         selectread<-select(readstate,c(7,2,11))
         names(selectread)<-c("State","Hospital.Name","condition")
+        selectread<-filter(selectread,condition!="Not Available")
+        selectread<-mutate(selectread,condition=type.convert(condition))
     }
     else if(outcome=="heart failure"){
         selectread<-select(readstate,c(7,2,17))
         names(selectread)<-c("State","Hospital.Name","condition")
+        selectread<-filter(selectread,condition!="Not Available")
+        selectread<-mutate(selectread,condition=type.convert(condition))
     }
     else if(outcome=="pneumonia"){
         selectread<-select(readstate,c(7,2,23))
         names(selectread)<-c("State","Hospital.Name","condition")
+        selectread<-filter(selectread,condition!="Not Available")
+        selectread<-mutate(selectread,condition=type.convert(condition))
     }
     else{
         stop(withCallingHandlers("invalid outcome"))
