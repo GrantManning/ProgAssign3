@@ -1,8 +1,6 @@
 rankhospital<-function(state,outcome,rank){
     state<-state
     outcome<-outcome
-    read<-read.csv("outcome-of-care-measures.csv")
-    readstate<-filter(read,read$State==state)
     if(nrow(readstate)==0){
         stop(withCallingHandlers("invalid state"))
     }
@@ -18,6 +16,8 @@ rankhospital<-function(state,outcome,rank){
     else{
         rank<-as.numeric(rank)
     }
+    read<-read.csv("outcome-of-care-measures.csv")
+    readstate<-filter(read,read$State==state)
     if (outcome=="heart attack"){
         condition<-readstate[,11]
     }
